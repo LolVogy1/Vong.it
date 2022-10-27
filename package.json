@@ -1,0 +1,27 @@
+{
+  "name": "vong.it",
+  "version": "0.0.1",
+  "description": "A snazzy reddit clone",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "testvongit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LolVogy1/Vong.it.git"
+  },
+  "keywords": [
+    "reddit"
+  ],
+  "author": "Alex Vong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LolVogy1/Vong.it/issues"
+  },
+  "homepage": "https://github.com/LolVogy1/Vong.it#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.6"
+  }
+}
