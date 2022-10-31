@@ -22,5 +22,15 @@ module.exports = (app) => {
         console.log(err.message);
       }
     });
+
+    // Get a single post
+    app.get('/posts/:id', async (req, res) => {
+      try{
+        const singlePost = await Post.findById(req.params.id).lean();
+        return res.render('posts-show',{singlePost});
+      } catch(err){
+        console.log(err.message);
+      }
+    });
   
   };
