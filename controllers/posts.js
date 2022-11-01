@@ -5,6 +5,7 @@ module.exports = (app) => {
 
     // CREATE
     app.post('/posts/new', (req, res) => {
+      console.log("unga");
       console.log(req.body);
       // INSTANTIATE INSTANCE OF POST MODEL
       const post = new Post(req.body);
@@ -24,7 +25,7 @@ module.exports = (app) => {
     });
 
     // Get a single post
-    app.get('/posts/:id', async (req, res) => {
+    app.get('/r/:subreddit/posts/:id', async (req, res) => {
       try{
         const singlePost = await Post.findById(req.params.id).lean();
         return res.render('posts-show',{singlePost});
@@ -32,5 +33,18 @@ module.exports = (app) => {
         console.log(err.message);
       }
     });
+
+    // Go to a subreddit
+    app.get('/r/:subreddit', async (req, res) => {
+      try{
+        console.log("aaa");
+        const posts = await Post.find({subreddit: req.params.subreddit}).lean();
+        console.log(posts);
+        return res.render('posts-index',{posts});
+      } catch(err){
+        console.log(err.message);
+      }
+    });
+    
   
   };

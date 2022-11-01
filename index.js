@@ -25,6 +25,7 @@ app.get('/', (req, res) => {
 
 // Render new post form
 app.get('/posts/new',(req, res) => {
+    console.log("unga");
     res.render('home',{layout:'posts-new'});
 });
 
