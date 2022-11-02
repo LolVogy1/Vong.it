@@ -3,15 +3,17 @@ const Post = require('../models/post');
 
 module.exports = (app) => {
 
-    // CREATE
-    app.post('/posts/new', (req, res) => {
-      console.log("unga");
-      console.log(req.body);
+    // Create a new post
+    app.post('/posts/new', async (req, res) => {
+      try{
       // INSTANTIATE INSTANCE OF POST MODEL
-      const post = new Post(req.body);
+      const post = await new Post(req.body);
   
       // SAVE INSTANCE OF POST MODEL TO DB AND REDIRECT TO THE ROOT
-      post.save(() => res.redirect('/'));
+      return post.save(() => res.redirect('/'));
+      } catch(err){
+        console.log(err.message);
+      }
     });
 
     // Render posts
@@ -27,7 +29,7 @@ module.exports = (app) => {
     // Get a single post
     app.get('/r/:subreddit/posts/:id', async (req, res) => {
       try{
-        const singlePost = await Post.findById(req.params.id).lean();
+        const singlePost = await Post.findById(req.params.id).lean().populate('comments');
         return res.render('posts-show',{singlePost});
       } catch(err){
         console.log(err.message);

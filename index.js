@@ -11,6 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 require('./controllers/posts')(app);
+require('./controllers/comments')(app);
 
 app.set('view engine', 'handlebars');
 app.engine('handlebars', handlebars.engine({
