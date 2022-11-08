@@ -1,4 +1,6 @@
 const Post = require('../models/post');
+const User = require('../models/user');
+const Comment = require('../models/comment');
 
 
 module.exports = (app) => {
@@ -7,26 +9,36 @@ module.exports = (app) => {
     app.post('/posts/new', async (req, res) => {
       try{
         if(req.user){
-          // INSTANTIATE INSTANCE OF POST MODEL
-          const post = await new Post(req.body);
-      
-          // SAVE INSTANCE OF POST MODEL TO DB AND REDIRECT TO THE ROOT
-          return post.save(() => res.redirect('/'));
+          // Get user Id
+          const userId = req.user._id;
+          // Make a new post and make the user the author
+          const post = new Post(req.body);
+          post.author = userId;
+
+          // Save the post
+          await post.save();
+
+          // Get user
+          const user = await User.findById(userId);
+          // Add post to user posts
+          user.posts.unshift(post);
+          
+          // Redirect to new post
+          return user.save(() => res.redirect(`/r/${post.subreddit}/posts/${post._id}`));
         }
         else{
           return res.status(401); // Unauthorised
-
         }
       } catch(err){
         console.log(err.message);
       }
+          
     });
 
     // Render posts
     app.get('/',  async (req, res) => {
       try{
         const currentUser = req.user;
-        console.log(currentUser);
         const posts = await Post.find({}).lean();
         return res.render('posts-index', {posts, currentUser});
       } catch(err){
@@ -49,9 +61,7 @@ module.exports = (app) => {
     app.get('/r/:subreddit', async (req, res) => {
       try{
         const currentUser = req.user;
-        console.log("aaa");
         const posts = await Post.find({subreddit: req.params.subreddit}).lean();
-        console.log(posts);
         return res.render('posts-index',{posts, currentUser});
       } catch(err){
         console.log(err.message);

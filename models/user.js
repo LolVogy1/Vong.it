@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const userSchema = new Schema({
     username: {type: String, required: true},
     password: {type: String, required: true},
+    posts: [{type: Schema.Types.ObjectId, ref: 'Post'}],
 }, {timestamps: true});
 
 userSchema.pre('save', function (next) {

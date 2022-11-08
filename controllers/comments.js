@@ -12,7 +12,7 @@ module.exports = (app) => {
             await comment.save();
             const post = await Post.findById(req.params.postID);
             // Join the comment to the post
-            await post.comments.unshift(comment);
+            post.comments.unshift(comment);
             return post.save(() => res.redirect('/'));
         }catch (err){
             console.log(err.message);
