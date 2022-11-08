@@ -3,6 +3,7 @@ require('dotenv').config();
 var express = require('express');
 const handlebars = require('express-handlebars');
 const cookieParser = require('cookie-parser');
+const checkAuth = require('./middleware/checkAuth');
 // Set db
 require('./data/reddit-db');
 
@@ -14,6 +15,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // Use cookieparser
 app.use(cookieParser());
+
+app.use(checkAuth);
 
 
 require('./controllers/posts')(app);
@@ -33,8 +36,9 @@ app.get('/', (req, res) => {
 
 // Render new post form
 app.get('/posts/new',(req, res) => {
+    const currentUser = req.user;
     console.log("unga");
-    res.render('home',{layout:'posts-new'});
+    res.render('home',{layout:'posts-new', currentUser});
 });
 
 app.listen(3000);
