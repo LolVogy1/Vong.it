@@ -9,6 +9,7 @@
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3">
             <a href="{{singlePost.url}}" class="lead">{{singlePost.title}}</a>
+            <p>{{singlePost.author.username}}</p>
             <p>{{singlePost.summary}}</p>
              <form action="/posts/{{singlePost._id}}/comments" method="post">
                 <textarea class='form-control' name="content" placeholder="Comment"></textarea>
@@ -18,9 +19,7 @@
             </form>
         </div>
         <div class = "row">
-            {{#each singlePost.comments}}
-              <p>{{this.content}}</p>
-            {{/each}}
+            {{> post-comments}}
         </div>
     </div>
 </html>
