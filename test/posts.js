@@ -1,13 +1,15 @@
 //test/posts.js
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const {describe, it} = require('mocha');
+const {describe, it, before} = require('mocha');
 
 // Import post model
 const Post = require('../models/post')
 const app = require('../index')
+const User = require('../models/user');
 
 const should = chai.should();
+const agent = chai.request.agent(app);
 
 chai.use(chaiHttp);
 
@@ -16,17 +18,30 @@ describe('Posts', function(){
     const newPost = {
         title:'test title',
         url:'https://testing.com',
-        summary:'this is a test post'  
+        summary:'this is a test post',
+        subreddit:'vongittesting',  
     };
+    const user = {username: 'posttest', password: 'testpost',};
+    before(function(done){
+        agent  
+            .post('/sign-up')
+            .set('content-type', 'application/x-www-form-urlencoded')
+            .send(user)
+            .then(function(res) {
+                done();
+            })
+            .catch(function(err){
+                done(err);
+            });
+    });
     it('should create a valid post at POST /posts/new', function(done) {
-        // Check the current amount of posts
+        // Check number of posts
         Post.estimatedDocumentCount()
-            .then(function (initialDocCount){
-                chai.request.agent(app)
+            .then(function(initialDocCount){
+                agent
                     .post('/posts/new')
                     // Fake a form post
-                    // As we're not really filling out a form
-                    .set('content-type','application/x-www-form-urlencoded')
+                    .set('content-type', 'application/x-www-form-urlencoded')
                     // Make a request to create another post
                     .send(newPost)
                     .then(function(res){
@@ -34,10 +49,13 @@ describe('Posts', function(){
                             .then(function(newDocCount){
                                 // Check for status 200
                                 res.should.have.status(200);
-                                // Should have 1 new post
+                                // Check that database has one more post
                                 newDocCount.should.equal(initialDocCount+1)
                                 done();
                             })
+                            .catch(function(err){
+                                done(err);
+                            });
                     })
                     .catch(function(err){
                         done(err);
@@ -46,17 +64,23 @@ describe('Posts', function(){
             .catch(function(err){
                 done(err);
             });
-
     });
+
     // Delete the test post
-    after(function(){
-        Post.findOneAndDelete(newPost, function(err, docs){
-            if(err){
-                console.log(err);
-            }
-            else{
-                console.log("Deleted Post: ", docs);
-            }
+    after(function(done){
+        Post.findOneAndDelete(newPost)
+        .then(function(){
+            agent.close();
+            User.findOneAndDelete({username: user.username})
+            .then(function(){
+                done();
+            })
+            .catch(function(err){
+                done(err);
+            });
+        })
+        .catch(function(err) {
+            done(err);
         });
     });
 });
