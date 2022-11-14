@@ -1,8 +1,10 @@
-<div class="col-xs-12 comment-indent">
-    <p>{{comment.author.username}}</p>
+<html>
+<div class="col-xs-12 comment-indent" style="margin-left:20px">
+    <p class="text-right">{{comment.author.username}}</p>
     <p>{{comment.content}}</p>
     <a href="/r/{{subreddit}}/posts/{{postId}}/comments/{{comment._id}}/replies/new">Reply</a>
     {{#each comment.comments}}
         {{> post-comments comment=this postId=../postId subreddit=../subreddit}}
     {{/each}}
 </div>
+</html>
