@@ -24,7 +24,7 @@ module.exports = (app) => {
                 const user = await User.findById(userId);
                 user.comments.unshift(comment);
 
-                return user.save(() => res.redirect('/'));
+                return user.save(() => res.redirect(`/r/${post.subreddit}/posts/${post._id}`));
             }
             else{
                 return res.status(401);
