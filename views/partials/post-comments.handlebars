@@ -1,6 +1,8 @@
-{{#each singlePost.comments}}
-    <div>
-    <p>{{this.author.username}}</p>
-    <p>{{this.content}}</p>
-    </div>
-{{/each}}
+<div class="col-xs-12 comment-indent">
+    <p>{{comment.author.username}}</p>
+    <p>{{comment.content}}</p>
+    <a href="/r/{{subreddit}}/posts/{{postId}}/comments/{{comment._id}}/replies/new">Reply</a>
+    {{#each comment.comments}}
+        {{> post-comments comment=this postId=../postId subreddit=../subreddit}}
+    {{/each}}
+</div>

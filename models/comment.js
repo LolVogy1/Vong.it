@@ -4,6 +4,7 @@ const Populate = require('../util/autopopulate');
 const commentSchema = new Schema({
     content:{type:String, required:true},
     author:{ type: Schema.Types.ObjectId, ref: 'User', required: true},
+    comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
     },{timestamps: true});
 
 // Populate the author field

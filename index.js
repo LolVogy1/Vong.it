@@ -22,6 +22,7 @@ app.use(checkAuth);
 require('./controllers/posts')(app);
 require('./controllers/comments')(app);
 require('./controllers/auth')(app);
+require('./controllers/replies')(app);
 
 app.set('view engine', 'handlebars');
 app.engine('handlebars', handlebars.engine({
