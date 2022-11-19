@@ -11,6 +11,13 @@
                          </div>
                          <div><small>{{this.author.username}}</small></div>
                         <a ref="{{this.url}}" target="_blank">{{this.url}}</a>
+
+                        <form class="vote-up" data-id="{{this._id}}">
+                            <button type=""submit>Upvote</button>
+                        </form>
+                        <form class="vote-down" data-id="{{this._id}}">
+                            <button type=""submit>Downvote</button>
+                        </form>
                     </li>
                     {{/each}}
                 </ul>

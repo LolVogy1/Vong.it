@@ -18,6 +18,8 @@ app.use(cookieParser());
 
 app.use(checkAuth);
 
+app.use(express.static('public'));
+
 
 require('./controllers/posts')(app);
 require('./controllers/comments')(app);

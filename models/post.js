@@ -8,6 +8,9 @@ const postSchema = new Schema({
   subreddit: { type: String, required: true },
   author: {type: Schema.Types.ObjectId, ref: 'User', required: true},
   comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
+  upVotes : [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  downVotes : [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  voteScore : { type: Number },
 },{timestamps : true});
 
 // Populate the author field
