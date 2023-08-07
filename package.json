@@ -28,7 +28,7 @@
     "express-handlebars": "^6.0.6",
     "express-validator": "^6.14.2",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^6.7.0"
+    "mongoose": "^6.11.5"
   },
   "devDependencies": {
     "chai": "^4.3.6",
